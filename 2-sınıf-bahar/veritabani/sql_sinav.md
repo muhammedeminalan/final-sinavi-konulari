@@ -1,6 +1,82 @@
 # SQL SINAV REHBERİ — DDL & DML KOMUTLARI
 ## Vize Hazırlık Dokümanı
 
+## İçindekiler
+
+- [Senaryo: Üniversite Bilgi Sistemi](#senaryo-üniversite-bilgi-sistemi)
+- [Bölüm 1: DDL (Data Definition Language) — Veri Tanımlama Dili](#bölüm-1-ddl-data-definition-language--veri-tanımlama-dili)
+    - [1.1 CREATE DATABASE — Veritabanı Oluşturma](#11-create-database--veritabanı-oluşturma)
+    - [1.2 DROP DATABASE — Veritabanı Silme](#12-drop-database--veritabanı-silme)
+    - [1.3 CREATE TABLE — Tablo Oluşturma](#13-create-table--tablo-oluşturma)
+    - [Örnek 1: Basit tablo oluşturma](#örnek-1-basit-tablo-oluşturma)
+    - [Örnek 2: Constraint'lerle (kısıtlamalarla) tablo oluşturma](#örnek-2-constraintlerle-kısıtlamalarla-tablo-oluşturma)
+    - [Örnek 3: AUTO_INCREMENT ile tablo oluşturma](#örnek-3-auto_increment-ile-tablo-oluşturma)
+    - [Örnek 4: FOREIGN KEY ile ilişkisel tablo oluşturma](#örnek-4-foreign-key-ile-ilişkisel-tablo-oluşturma)
+    - [Örnek 5: CHECK kısıtlaması ile tablo oluşturma](#örnek-5-check-kısıtlaması-ile-tablo-oluşturma)
+    - [Örnek 6: Çoktan çoğa ilişki tablosu (Junction Table)](#örnek-6-çoktan-çoğa-ilişki-tablosu-junction-table)
+    - [Örnek 7: CREATE TABLE ... AS SELECT (Varolan veriden tablo oluşturma)](#örnek-7-create-table--as-select-varolan-veriden-tablo-oluşturma)
+    - [1.4 ALTER TABLE — Tablo Yapısını Değiştirme](#14-alter-table--tablo-yapısını-değiştirme)
+    - [Örnek 1: Yeni sütun ekleme (ADD)](#örnek-1-yeni-sütun-ekleme-add)
+    - [Örnek 2: Sütun silme (DROP COLUMN)](#örnek-2-sütun-silme-drop-column)
+    - [Örnek 3: Sütunun veri tipini değiştirme (MODIFY / ALTER COLUMN)](#örnek-3-sütunun-veri-tipini-değiştirme-modify--alter-column)
+    - [Örnek 4: Sütun adını değiştirme (RENAME COLUMN)](#örnek-4-sütun-adını-değiştirme-rename-column)
+    - [Örnek 5: Constraint ekleme](#örnek-5-constraint-ekleme)
+    - [Örnek 6: Constraint kaldırma](#örnek-6-constraint-kaldırma)
+    - [Örnek 7: DEFAULT değer ekleme/kaldırma](#örnek-7-default-değer-eklemekaldırma)
+    - [Örnek 8: Tablo adını değiştirme](#örnek-8-tablo-adını-değiştirme)
+    - [1.5 DROP TABLE — Tablo Silme](#15-drop-table--tablo-silme)
+    - [1.6 TRUNCATE TABLE — Tablo Verilerini Temizleme](#16-truncate-table--tablo-verilerini-temizleme)
+    - [1.7 CREATE INDEX — İndeks Oluşturma](#17-create-index--i̇ndeks-oluşturma)
+    - [1.8 CREATE VIEW — Görünüm Oluşturma](#18-create-view--görünüm-oluşturma)
+    - [1.9 CONSTRAINT'LER — Özet ve Karşılaştırma](#19-constraintler--özet-ve-karşılaştırma)
+- [Bölüm 2: DML (Data Manipulation Language) — Veri İşleme Dili](#bölüm-2-dml-data-manipulation-language--veri-işleme-dili)
+    - [2.1 INSERT INTO — Veri Ekleme](#21-insert-into--veri-ekleme)
+        - [Örnek 1: Tüm sütunlara değer vererek ekleme](#örnek-1-tüm-sütunlara-değer-vererek-ekleme)
+        - [Örnek 2: Belirli sütunlara değer vererek ekleme (önerilen yöntem)](#örnek-2-belirli-sütunlara-değer-vererek-ekleme-önerilen-yöntem)
+        - [Örnek 3: Birden fazla satırı tek seferde ekleme](#örnek-3-birden-fazla-satırı-tek-seferde-ekleme)
+        - [Örnek 4: AUTO_INCREMENT olan tabloya veri ekleme](#örnek-4-auto_increment-olan-tabloya-veri-ekleme)
+        - [Örnek 5: Toplu öğretim görevlisi ekleme](#örnek-5-toplu-öğretim-görevlisi-ekleme)
+        - [Örnek 6: Ders ve not ekleme](#örnek-6-ders-ve-not-ekleme)
+        - [Örnek 7: INSERT INTO ... SELECT (Başka sorgudan veri ekleme)](#örnek-7-insert-into--select-başka-sorgudan-veri-ekleme)
+    - [2.2 SELECT — Veri Sorgulama](#22-select--veri-sorgulama)
+        - [Örnek 1: Tüm verileri çekme](#örnek-1-tüm-verileri-çekme)
+        - [Örnek 2: Belirli sütunları seçme](#örnek-2-belirli-sütunları-seçme)
+        - [Örnek 3: DISTINCT — Tekrar eden değerleri eleme](#örnek-3-distinct--tekrar-eden-değerleri-eleme)
+        - [Örnek 4: WHERE — Koşullu sorgulama](#örnek-4-where--koşullu-sorgulama)
+        - [Örnek 5: AND, OR, NOT — Çoklu koşul](#örnek-5-and-or-not--çoklu-koşul)
+        - [Örnek 6: ORDER BY — Sıralama](#örnek-6-order-by--sıralama)
+        - [Örnek 7: SELECT TOP / LIMIT — Satır sayısını sınırlama](#örnek-7-select-top--limit--satır-sayısını-sınırlama)
+        - [Örnek 8: LIKE — Desen (pattern) eşleme](#örnek-8-like--desen-pattern-eşleme)
+        - [Örnek 9: IN — Bir listedeki değerlerle eşleme](#örnek-9-in--bir-listedeki-değerlerle-eşleme)
+        - [Örnek 10: BETWEEN — Aralık sorgusu](#örnek-10-between--aralık-sorgusu)
+        - [Örnek 11: IS NULL / IS NOT NULL — Boş değer kontrolü](#örnek-11-is-null--is-not-null--boş-değer-kontrolü)
+        - [Örnek 12: Aliases (AS) — Takma ad verme](#örnek-12-aliases-as--takma-ad-verme)
+        - [Örnek 13: Aggregate Functions — Toplam fonksiyonlar](#örnek-13-aggregate-functions--toplam-fonksiyonlar)
+        - [Örnek 14: GROUP BY — Gruplama](#örnek-14-group-by--gruplama)
+        - [Örnek 15: HAVING — Grupları filtreleme](#örnek-15-having--grupları-filtreleme)
+        - [Örnek 16: JOIN — Tabloları birleştirme](#örnek-16-join--tabloları-birleştirme)
+        - [Örnek 17: UNION — Sorgu sonuçlarını birleştirme](#örnek-17-union--sorgu-sonuçlarını-birleştirme)
+        - [Örnek 18: Subquery (Alt sorgu)](#örnek-18-subquery-alt-sorgu)
+        - [Örnek 19: EXISTS](#örnek-19-exists)
+        - [Örnek 20: CASE — Koşullu ifade](#örnek-20-case--koşullu-ifade)
+    - [2.3 UPDATE — Veri Güncelleme](#23-update--veri-güncelleme)
+        - [Örnek 1: Tek satır güncelleme](#örnek-1-tek-satır-güncelleme)
+        - [Örnek 2: Birden fazla sütunu güncelleme](#örnek-2-birden-fazla-sütunu-güncelleme)
+        - [Örnek 3: Koşullu toplu güncelleme](#örnek-3-koşullu-toplu-güncelleme)
+        - [Örnek 4: Hesaplama ile güncelleme](#örnek-4-hesaplama-ile-güncelleme)
+        - [Örnek 5: Alt sorgu ile güncelleme](#örnek-5-alt-sorgu-ile-güncelleme)
+        - [Örnek 6: JOIN ile güncelleme (MySQL)](#örnek-6-join-ile-güncelleme-mysql)
+        - [Örnek 7: WHERE olmadan UPDATE — TEHLİKELİ!](#örnek-7-where-olmadan-update--tehli̇keli̇)
+    - [2.4 DELETE — Veri Silme](#24-delete--veri-silme)
+        - [Örnek 1: Tek satır silme](#örnek-1-tek-satır-silme)
+        - [Örnek 2: Koşullu silme](#örnek-2-koşullu-silme)
+        - [Örnek 3: Çoklu koşullu silme](#örnek-3-çoklu-koşullu-silme)
+        - [Örnek 4: Alt sorgu ile silme](#örnek-4-alt-sorgu-ile-silme)
+        - [Örnek 5: Tüm verileri silme (WHERE'siz DELETE)](#örnek-5-tüm-verileri-silme-wheresiz-delete)
+        - [Örnek 6: FOREIGN KEY olan tabloda silme sorunu](#örnek-6-foreign-key-olan-tabloda-silme-sorunu)
+- [Bölüm 3: Sınav İçin Kritik Karşılaştırmalar](#bolum-3-sinav-icin-kritik-karsilastirmalar)
+- [Bölüm 4: Sınavda Çıkabilecek Örnek Sorular](#bolum-4-sinavda-cikabilecek-ornek-sorular)
+
 ---
 
 # SENARYO: Üniversite Bilgi Sistemi
@@ -1199,6 +1275,8 @@ DELETE FROM bolumler WHERE bolum_id = 1;
 ---
 ---
 
+<a id="bolum-3-sinav-icin-kritik-karsilastirmalar"></a>
+
 # BÖLÜM 3: SINAV İÇİN KRİTİK KARŞILAŞTIRMALAR
 
 ## DELETE vs TRUNCATE vs DROP
@@ -1254,6 +1332,8 @@ Yazma sırası ile çalışma sırası FARKLIDIR! Sınavda bunu bilmek çok öne
 | _ | Tam 1 karakter | '_e%' → İkinci harfi e olan |
 
 ---
+
+<a id="bolum-4-sinavda-cikabilecek-ornek-sorular"></a>
 
 # BÖLÜM 4: SINAVDA ÇIKABİLECEK ÖRNEK SORULAR
 
@@ -1321,5 +1401,3 @@ ADD donem VARCHAR(10) DEFAULT 'Güz';
 ```
 
 ---
-
-**Bu rehber vize sınavındaki DDL ve DML konularının tamamını kapsar. Her komutu mantığıyla birlikte, aynı senaryo üzerinden, birden fazla kullanım şekliyle öğrendin.**
