@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>Finansal Yönetim Çalışma Notları</title>
+
+<style>
+:root{
+color-scheme:light;
+--font-sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Liberation Sans",sans-serif;
+--font-mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+--color-text-primary:#111827;
+--color-text-secondary:#4B5563;
+--color-background-primary:#FFFFFF;
+--color-background-secondary:#F8FAFC;
+--color-border-secondary:#D1D5DB;
+--color-border-tertiary:#E5E7EB;
+--border-radius-md:10px;
+--border-radius-lg:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans);color:var(--color-text-primary);line-height:1.7;font-size:15px;font-weight:400;background:var(--color-background-secondary);padding:20px;max-width:1200px;margin:0 auto;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+.tab-bar{display:flex;gap:4px;overflow-x:auto;padding:0 0 12px;border-bottom:0.5px solid var(--color-border-tertiary);margin-bottom:1.5rem;-webkit-overflow-scrolling:touch}
+.tab-btn{padding:8px 14px;font-size:13px;font-weight:500;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);background:var(--color-background-primary);color:var(--color-text-secondary);cursor:pointer;white-space:nowrap;transition:all .15s}
+.tab-btn:hover{background:var(--color-background-secondary);color:var(--color-text-primary)}
+.tab-btn.active{background:#534AB7;color:#fff;border-color:#534AB7}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem 1.25rem;margin-bottom:1rem}
+.card h3{font-size:16px;font-weight:500;margin-bottom:10px;color:var(--color-text-primary)}
+.card h4{font-size:14px;font-weight:500;margin:10px 0 6px;color:var(--color-text-primary)}
+.highlight{border-left:3px solid #534AB7;background:#EEEDFE;padding:10px 14px;border-radius:0;margin:10px 0;font-size:13px;color:#3C3489}
+.highlight-warn{border-left:3px solid #BA7517;background:#FAEEDA;padding:10px 14px;border-radius:0;margin:10px 0;font-size:13px;color:#633806}
+.highlight-success{border-left:3px solid #639922;background:#EAF3DE;padding:10px 14px;border-radius:0;margin:10px 0;font-size:13px;color:#27500A}
+.highlight-danger{border-left:3px solid #E24B4A;background:#FCEBEB;padding:10px 14px;border-radius:0;margin:10px 0;font-size:13px;color:#791F1F}
+.badge{display:inline-block;padding:2px 10px;border-radius:var(--border-radius-md);font-size:11px;font-weight:500;margin:2px 4px 2px 0}
+.badge-purple{background:#EEEDFE;color:#3C3489}
+.badge-teal{background:#E1F5EE;color:#085041}
+.badge-coral{background:#FAECE7;color:#712B13}
+.badge-blue{background:#E6F1FB;color:#0C447C}
+.badge-amber{background:#FAEEDA;color:#633806}
+.badge-pink{background:#FBEAF0;color:#72243E}
+.badge-green{background:#EAF3DE;color:#27500A}
+.badge-red{background:#FCEBEB;color:#791F1F}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0}
+th{text-align:left;padding:8px 10px;background:var(--color-background-secondary);font-weight:500;border-bottom:0.5px solid var(--color-border-secondary);font-size:12px;color:var(--color-text-secondary)}
+td{padding:7px 10px;border-bottom:0.5px solid var(--color-border-tertiary);color:var(--color-text-primary)}
+.formula-box{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:10px 14px;margin:8px 0;font-family:var(--font-mono);font-size:13px;color:var(--color-text-primary);text-align:center}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+.mini-card{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:10px 12px}
+.mini-card p{font-size:13px;color:var(--color-text-secondary);margin-top:4px}
+.mini-card .title{font-size:13px;font-weight:500;color:var(--color-text-primary)}
+.section-title{font-size:18px;font-weight:500;margin:1.5rem 0 1rem;padding-bottom:6px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.example-box{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:12px 14px;margin:8px 0;font-size:13px}
+.example-box .label{font-size:11px;font-weight:500;color:#534AB7;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px}
+.search-box{width:100%;padding:8px 12px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);font-size:14px;margin-bottom:1rem;background:var(--color-background-primary);color:var(--color-text-primary)}
+.search-box:focus{outline:none;border-color:#534AB7}
+.step{display:flex;gap:10px;margin:6px 0;font-size:13px}
+.step-num{min-width:22px;height:22px;border-radius:50%;background:#EEEDFE;color:#3C3489;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500}
+</style>
+</head>
+<body>
+
+<input type="text" class="search-box" id="searchBox" placeholder="Konu veya formül ara... (ör: DuPont, anüite, MVA)" oninput="filterContent(this.value)">
+
+<div class="tab-bar" id="tabBar">
+<button class="tab-btn active" onclick="switchTab(0)">1. Hafta</button>
+<button class="tab-btn" onclick="switchTab(1)">2. Hafta</button>
+<button class="tab-btn" onclick="switchTab(2)">3. Hafta</button>
+<button class="tab-btn" onclick="switchTab(3)">4. Hafta</button>
+<button class="tab-btn" onclick="switchTab(4)">5. Hafta</button>
+<button class="tab-btn" onclick="switchTab(5)">6. Hafta</button>
+<button class="tab-btn" onclick="switchTab(6)">Formüller</button>
+</div>
+
+<div class="tab-panel active" id="panel0">
+<div class="section-title">Finansal yönetimin genel esasları ve tasarruf-yatırım ilişkisi</div>
+
+<div class="card">
+<h3>Finansal amaçlar</h3>
+<div class="grid2">
+<div class="mini-card"><span class="title">Parasal amaçlar</span><p>Gelire dönük (kar maks.), nakit akımına dönük, likiditeye dönük, karlılığa dönük, varlığa dönük</p></div>
+<div class="mini-card"><span class="title">Parasal olmayan amaçlar</span><p>Banka ilişkileri, kredi değerliliği, emisyon yeteneği, uygun sermaye yapısını koruma</p></div>
+</div>
+<div class="highlight">Modern finansta firmanın temel amacı: Firma özsermayesinin piyasa değerinin (piyasa kapitalizasyonunun) maksimizasyonudur. Bu, kâr maksimizasyonunu da kapsar.</div>
+<div class="highlight-warn">Temel finansman kuralı: Uzun vadeli projeler → uzun vadeli kaynak, kısa vadeli projeler → kısa vadeli kaynak.</div>
+</div>
+
+<div class="card">
+<h3>Finans yöneticisi</h3>
+<p style="font-size:13px">Temel amacı: firma piyasa değerinin maksimizasyonu. Bağımsız değildir — yasalar, çevre koruma, sosyal sorumluluk kısıtları altında karar verir.</p>
+<div class="highlight-danger">Karlılığı artıran kararlar aynı zamanda riski artırır. Yönetici karlılık-risk dengesini kurmalıdır.</div>
+<p style="font-size:13px;margin-top:8px">Firmanın pazar değeri iki şeye bağlıdır: <strong style="font-weight:500">(1)</strong> gelecekte sağlanacak nakit akımları, <strong style="font-weight:500">(2)</strong> bu nakdin elde edilmesindeki risk derecesi.</p>
+</div>
+
+<div class="card">
+<h3>Tasarruf-yatırım ilişkisi</h3>
+<p style="font-size:13px">Tasarruf = bireylerin/kurumların tüketimden arta kalan geliri. Bir kazanç (faiz/kar) karşılığında fon ihtiyacı olanlara aktarılır.</p>
+<h4>Tasarruf açığı sebepleri</h4>
+<div class="step"><div class="step-num">1</div><span>Toplumun çoğu kesiminin gelir seviyesinin düşük olması</span></div>
+<div class="step"><div class="step-num">2</div><span>Yüksek enflasyon — tasarruflar enflasyonun üzerinde değerlendirilemiyor</span></div>
+<div class="step"><div class="step-num">3</div><span>Güvenli yatırım ortamı için kurumsal düzenlemelerin eksikliği</span></div>
+
+<h4>Yatırım türleri</h4>
+<div class="grid2">
+<div class="mini-card"><span class="title">Reel yatırımlar</span><p>Bina, arsa, arazi — fiziksel varlıklar</p></div>
+<div class="mini-card"><span class="title">Finansal yatırımlar</span><p>Fiziki varlığı olmayan, alacak/ortaklık hakkı veren yatırımlar</p></div>
+</div>
+</div>
+
+<div class="card">
+<h3>Yatırımcı türleri</h3>
+<table>
+<tr><th>Tür</th><th>Tanım</th><th>Not</th></tr>
+<tr><td><span class="badge badge-purple">Yatırımcı</span></td><td>Birikimlerini belirli vade ve araçlara bağlar</td><td>Getiri hedefli</td></tr>
+<tr><td><span class="badge badge-blue">Spekülatör</span></td><td>Kısa vadeli, fiyat değişimlerinden kar hedefler</td><td>Kısa vade odaklı</td></tr>
+<tr><td><span class="badge badge-red">Manipülatör</span></td><td>Suni fiyat hareketleri oluşturarak kar eder</td><td>YASAK!</td></tr>
+<tr><td><span class="badge badge-teal">Arbitrajcı</span></td><td>Bir piyasadan alıp eş anlı başka piyasada satar</td><td>Fiyat dengesine katkı sağlar</td></tr>
+<tr><td><span class="badge badge-amber">Hedger</span></td><td>Vadeli işlem piyasalarında riskten korunma</td><td>Futures, forward, opsiyon, swap</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>Finansal piyasaların ekonomiye faydaları</h3>
+<div class="grid3">
+<div class="mini-card"><span class="title">Gelir dağılımı</span><p>Kaynakların etkin dağılımı</p></div>
+<div class="mini-card"><span class="title">Miktar ayarlaması</span><p>Küçük tasarruflar → büyük fonlar</p></div>
+<div class="mini-card"><span class="title">Vade ayarlaması</span><p>Kısa-orta-uzun vade eşleştirme</p></div>
+<div class="mini-card"><span class="title">Risk ayarlaması</span><p>Farklı risk düzeylerinde araçlar</p></div>
+<div class="mini-card"><span class="title">Rekabet artışı</span><p>Faiz oranları reel büyüklüklere göre</p></div>
+</div>
+<div class="highlight">Risk ve getiri paralel gider. Yüksek getiri = yüksek risk. Kazanmak istiyorsan o kadar kaybetmeyi de göze almalısın.</div>
+</div>
+
+<div class="card">
+<h3>Para piyasası vs sermaye piyasası</h3>
+<table>
+<tr><th>Kriter</th><th><span class="badge badge-blue">Para piyasası</span></th><th><span class="badge badge-purple">Sermaye piyasası</span></th></tr>
+<tr><td>Vade</td><td>Kısa vadeli (max 1 yıl)</td><td>Orta-uzun vadeli (1+ yıl)</td></tr>
+<tr><td>Risk/Faiz</td><td>Düşük</td><td>Yüksek</td></tr>
+<tr><td>Araçlar</td><td>Mevduat, hazine bonosu, repo</td><td>Hisse senedi, tahvil, intifa</td></tr>
+<tr><td>Kaynak</td><td>Geçici fon ihtiyaçları</td><td>Yatırım ve sürekli sermaye</td></tr>
+<tr><td>Düzenleyici</td><td>TCMB, BDDK</td><td>SPK</td></tr>
+</table>
+</div>
+</div>
+
+<div class="tab-panel" id="panel1">
+<div class="section-title">Finansal piyasalar ve kurumlar</div>
+
+<div class="card">
+<h3>Sermaye dağıtım süreci — 3 yol</h3>
+<div class="step"><div class="step-num">1</div><span><strong style="font-weight:500">Doğrudan transfer:</strong> İşletme → hisse/tahvil → doğrudan tasarruf sahibine (aracı yok)</span></div>
+<div class="step"><div class="step-num">2</div><span><strong style="font-weight:500">Yatırım bankası aracılığıyla:</strong> İşletme → yatırım bankası (satın alır) → tasarruf sahibine satar</span></div>
+<div class="step"><div class="step-num">3</div><span><strong style="font-weight:500">Finansal aracı kurum:</strong> Banka/sigorta/yatırım fonu → kendi menkul kıymetleri karşılığında fon toplar → işletmelere aktarır</span></div>
+</div>
+
+<div class="card">
+<h3>Finansal piyasaların sınıflandırılması</h3>
+<table>
+<tr><th>Kriter</th><th>Tür 1</th><th>Tür 2</th></tr>
+<tr><td><span class="badge badge-purple">Alım satım</span></td><td><strong style="font-weight:500">Birincil:</strong> ilk ihraç (halka arz)</td><td><strong style="font-weight:500">İkincil:</strong> daha önce ihraç edilmişlerin alım satımı (BİST)</td></tr>
+<tr><td><span class="badge badge-teal">Örgütlenme</span></td><td><strong style="font-weight:500">Örgütlü:</strong> fiziki mekân, belirli kurallar (BİST)</td><td><strong style="font-weight:500">Tezgâh üstü:</strong> fiziki mekân yok, pazarlıkla fiyat</td></tr>
+<tr><td><span class="badge badge-coral">İşlem zamanı</span></td><td><strong style="font-weight:500">Spot:</strong> ödeme ve teslimat derhal</td><td><strong style="font-weight:500">Vadeli:</strong> gelecekte ödeme/teslimat (VİOB)</td></tr>
+<tr><td><span class="badge badge-blue">Varlık türü</span></td><td><strong style="font-weight:500">Borç piyasası:</strong> tahvil, bono</td><td><strong style="font-weight:500">Ortaklık piyasası:</strong> hisse senedi</td></tr>
+<tr><td><span class="badge badge-amber">Ödünç süresi</span></td><td><strong style="font-weight:500">Para piyasası:</strong> kısa vade (≤1 yıl)</td><td><strong style="font-weight:500">Sermaye piyasası:</strong> uzun vade (>1 yıl)</td></tr>
+</table>
+<div class="highlight">Aracılık yüklenimi (underwriting): Aracı kuruluş menkul kıymetlerin hepsinin satılmasını garanti eder — bir tür sigorta işlevi.</div>
+</div>
+
+<div class="card">
+<h3>Para piyasası araçları</h3>
+<div class="grid2">
+<div class="mini-card"><span class="title">Hazine bonosu</span><p>Devletin bütçe açığı finansmanı. Vadesi &lt;1 yıl. İskontolu satılır.</p></div>
+<div class="mini-card"><span class="title">Repo</span><p>Menkul kıymetin geri alım taahhüdüyle satımı. Vade: 1 gece-30 gün.</p></div>
+<div class="mini-card"><span class="title">Finansman bonosu</span><p>A.Ş.'lerin kısa vadeli borçlanması. Vade: 3 ay katları, max 1 yıl. İskontolu.</p></div>
+<div class="mini-card"><span class="title">VDMK</span><p>Alacaklar karşılığında ihraç edilen menkul kıymet.</p></div>
+</div>
+<div class="highlight-warn">Hazine bonosu (vade &lt; 1 yıl) vs Devlet tahvili (vade ≥ 1 yıl) — ayrımı karıştırma!</div>
+</div>
+
+<div class="card">
+<h3>Hisse senedi hakları ve türleri</h3>
+<p style="font-size:13px;margin-bottom:8px">Anonim ortaklıklar tarafından çıkarılan, şirket sermayesine katılımı temsil eden kıymetli evraklar.</p>
+<h4>Sağladığı haklar</h4>
+<div style="display:flex;flex-wrap:wrap;gap:4px;margin:6px 0">
+<span class="badge badge-purple">Ortaklık</span><span class="badge badge-teal">Oy hakkı</span><span class="badge badge-coral">Temettü</span><span class="badge badge-blue">Rüçhan hakkı</span><span class="badge badge-amber">Bedelsiz pay</span><span class="badge badge-pink">Tasfiyeden pay</span><span class="badge badge-green">Bilgi edinme</span>
+</div>
+<h4>Türleri</h4>
+<table>
+<tr><th>Ayrım</th><th>Tür A</th><th>Tür B</th></tr>
+<tr><td>Yazılım</td><td>Nama (isme yazılı)</td><td>Hamiline yazılı</td></tr>
+<tr><td>Hak</td><td>Adi (eşit haklar)</td><td>İmtiyazlı (üstün haklar, A/B grubu)</td></tr>
+<tr><td>Değer</td><td>Primsiz (nominal değerde)</td><td>Primli (nominal üzerinde)</td></tr>
+<tr><td>Ödeme</td><td>Bedelli (nakit ödeme ile)</td><td>Bedelsiz (iç kaynaklardan)</td></tr>
+</table>
+<h4>Gelir türleri</h4>
+<div class="grid2">
+<div class="mini-card"><span class="title">Kar payı (temettü)</span><p>Yıl sonu karının ortaklara dağıtılması</p></div>
+<div class="mini-card"><span class="title">Sermaye kazancı</span><p>Hisse değerindeki artıştan elde edilen gelir</p></div>
+</div>
+</div>
+
+<div class="card">
+<h3>Tahvil</h3>
+<p style="font-size:13px">Devletin/özel sektörün orta-uzun vadeli borçlanma senedi.</p>
+<div class="highlight-danger">Tahvil ortaklık hakkı VERMEZ — sadece alacaklılık hakkı sağlar.</div>
+<div class="grid3">
+<div class="mini-card"><span class="title">Nominal değer</span><p>Vade sonunda ele geçecek para</p></div>
+<div class="mini-card"><span class="title">Kupon oranı</span><p>Nominal üzerinden yüzde faiz</p></div>
+<div class="mini-card"><span class="title">Vade</span><p>Anapara + son faiz tarihi (min 1 yıl)</p></div>
+</div>
+</div>
+
+<div class="card">
+<h3>Diğer sermaye piyasası araçları</h3>
+<table>
+<tr><th>Araç</th><th>Özellik</th></tr>
+<tr><td><span class="badge badge-teal">Gayrimenkul sertifikası</span></td><td>İnşaat projesi finansmanı, hamiline yazılı, banka garantili</td></tr>
+<tr><td><span class="badge badge-purple">Katılma intifa senedi</span></td><td>Ortaklık hakkı YOK, kardan pay + tasfiye bakiyesi hakkı var</td></tr>
+<tr><td><span class="badge badge-coral">Kar zarar ortaklığı belgesi</span></td><td>Kar VE zarara ortak. 1 ay-7 yıl vade. Kar garantisi yok!</td></tr>
+<tr><td><span class="badge badge-blue">Varant</span></td><td>Alma/satma HAKKI verir, yükümlülük getirmez. Menkul kıymet haline getirilmiş opsiyon.</td></tr>
+</table>
+<div class="highlight">Menkul kıymet tanımı: Ortaklık veya alacaklılık sağlayan, belli tutarı temsil eden, yatırım aracı, dönemsel gelir getiren, misli nitelikte, seri halinde çıkarılan kıymetli evrak. ⚠ Nakit, çek, poliçe, bono, mevduat sertifikası sermaye piyasası aracı DEĞİLDİR.</div>
+</div>
+
+<div class="card">
+<h3>Finansal kurumlar</h3>
+<div class="grid2">
+<div class="mini-card"><span class="title">Yatırım bankaları</span><p>Sermaye tedarikine yardım — menkul kıymet dizaynı, satın alma, satma</p></div>
+<div class="mini-card"><span class="title">Ticari bankalar</span><p>"Finans süper marketleri" — çeşitli hizmetler</p></div>
+<div class="mini-card"><span class="title">Yatırım fonları</span><p>Tasarruflarla tahvil/hisse/kısa vadeli araç alan şirketler</p></div>
+<div class="mini-card"><span class="title">Hedge fonlar</span><p>Yatırım fonuna benzer, daha esnek stratejiler</p></div>
+<div class="mini-card"><span class="title">Emeklilik fonları</span><p>Şirket/devlet finanse eder, banka/sigorta yönetir</p></div>
+<div class="mini-card"><span class="title">Girişim sermayesi</span><p>Tüm firmayı satın alıp yönetir</p></div>
+</div>
+</div>
+</div>
+
+<div class="tab-panel" id="panel2">
+<div class="section-title">Finansal tablolar, nakit akışı ve vergiler</div>
+
+<div class="card">
+<h3>4 temel finansal tablo</h3>
+<table>
+<tr><th>Tablo</th><th>Ne gösterir?</th><th>Zaman</th></tr>
+<tr><td><span class="badge badge-purple">Bilanço</span></td><td>Varlıklar + borçlar + öz kaynak</td><td>Anlık fotoğraf (31 Aralık gibi)</td></tr>
+<tr><td><span class="badge badge-teal">Gelir tablosu</span></td><td>Satışlar, maliyetler, kar</td><td>Dönem boyunca (çeyrek/yıl)</td></tr>
+<tr><td><span class="badge badge-coral">Nakit akış tablosu</span></td><td>Nakit girişi, çıkışı, değişim nedenleri</td><td>Dönem boyunca</td></tr>
+<tr><td><span class="badge badge-blue">Öz kaynak değişim tablosu</span></td><td>Öz kaynağın değişimi ve nedenleri</td><td>Dönem boyunca</td></tr>
+</table>
+<div class="highlight">Bu dört tablo birbiriyle ilişkilidir ve birlikte işletmenin finansal durumunun tam resmini verir.</div>
+</div>
+
+<div class="card">
+<h3>Bilanço yapısı</h3>
+<div class="grid2">
+<div class="mini-card" style="border-left:3px solid #534AB7;border-radius:0">
+<span class="title">Varlıklar (aktif — sol taraf)</span>
+<p><strong style="font-weight:500">Dönen:</strong> nakit, alacaklar, stoklar (≤1 yıl nakde çevrilir)</p>
+<p><strong style="font-weight:500">Duran:</strong> makine, bina, telif hakkı (>1 yıl kullanım)</p>
+</div>
+<div class="mini-card" style="border-left:3px solid #1D9E75;border-radius:0">
+<span class="title">Kaynaklar (pasif — sağ taraf)</span>
+<p><strong style="font-weight:500">Kısa vadeli borç:</strong> ≤1 yıl ödeme</p>
+<p><strong style="font-weight:500">Uzun vadeli borç:</strong> >1 yıl ödeme</p>
+<p><strong style="font-weight:500">Öz kaynak:</strong> sermaye + dağıtılmamış kar</p>
+</div>
+</div>
+<div class="formula-box">Öz Kaynak = Ödenmiş Sermaye + Dağıtılmamış Kârlar</div>
+<div class="formula-box">Öz Kaynak = Toplam Varlıklar – Toplam Borçlar</div>
+<div class="formula-box">Net İşletme Sermayesi = Dönen Varlıklar – Kısa Vadeli Borçlar</div>
+</div>
+
+<div class="card">
+<h3>Önemli bilanço kavramları</h3>
+<table>
+<tr><th>Kavram</th><th>Açıklama</th></tr>
+<tr><td><span class="badge badge-purple">Amortisman</span></td><td>Maddi duran varlıkların aşınma/yıpranma payı — ekonomik ömre dağıtılarak gider yazılır</td></tr>
+<tr><td><span class="badge badge-teal">İtfa payı</span></td><td>Maddi olmayan duran varlıkların (patent, marka, telif) değer kaybı</td></tr>
+<tr><td><span class="badge badge-coral">Defter değeri</span></td><td>Özkaynak / ödenmiş sermaye</td></tr>
+<tr><td><span class="badge badge-blue">Piyasa değeri</span></td><td>Borsada alınıp satıldığı fiyat</td></tr>
+</table>
+<div class="highlight-warn">Bilanço belirli bir anın fotoğrafıdır — mevsimsel etkilerden çabuk etkilenen işletmelerin bilançoları yıl içinde çok dalgalanır.</div>
+</div>
+
+<div class="card">
+<h3>EBITDA ve nakit akışı</h3>
+<div class="formula-box">EBITDA = Faaliyet Geliri + Amortisman</div>
+<div class="highlight">Amortisman nakit gider DEĞİLDİR (para geçmişte harcanmıştır). Bu yüzden yöneticiler ve bankacılar EBITDA'ya bakar.</div>
+<div class="highlight-danger">"Finansta nakit kraldır" — Net gelir nakit değildir. Varlığın değeri, üretmesi beklenen nakit akışlarına dayanır.</div>
+</div>
+
+<div class="card">
+<h3>MVA ve EVA</h3>
+<div class="grid2">
+<div class="mini-card" style="border-left:3px solid #534AB7;border-radius:0">
+<span class="title">MVA — piyasa katma değeri</span>
+<div class="formula-box" style="text-align:left">MVA = Piyasa Değeri – Defter Değeri<br>Piyasa Değeri = Hisse Fiyatı × Hisse Adedi</div>
+<p>MVA yüksek → yönetim iyi iş yapıyor</p>
+</div>
+<div class="mini-card" style="border-left:3px solid #1D9E75;border-radius:0">
+<span class="title">EVA — ekonomik katma değer</span>
+<div class="formula-box" style="text-align:left">EVA = NOPAT – Sermaye Maliyeti</div>
+<p>EVA pozitif → gelir, sermaye maliyetini aşıyor → değer katılıyor</p>
+</div>
+</div>
+<div class="example-box">
+<div class="label">Örnek — MVA hesabı (Allied)</div>
+Hisse fiyatı: 23,06$ — Hisse adedi: 50.000.000<br>
+Piyasa değeri = 50M × 23,06 = 1.153.000.000$<br>
+MVA = 1.153.000.000 − 940.000.000 = <strong style="font-weight:500;color:#534AB7">213.000.000$</strong>
+</div>
+<div class="highlight">EVA ile muhasebe karı farkı: muhasebe karında sermaye maliyeti düşülmez, EVA'da düşülür.</div>
+</div>
+</div>
+
+<div class="tab-panel" id="panel3">
+<div class="section-title">Finansal tablo analizi — oran analizi ve DuPont</div>
+
+<div class="card">
+<h3>4 analiz tekniği</h3>
+<table>
+<tr><th>Yöntem</th><th>Ne yapar?</th><th>Dikkat</th></tr>
+<tr><td><span class="badge badge-purple">Yatay analiz</span></td><td>2+ dönem karşılaştırma (tutar + yüzde)</td><td>Fark = Yeni−Eski, % = Fark/Eski×100</td></tr>
+<tr><td><span class="badge badge-teal">Dikey analiz</span></td><td>Tek dönem — her kalemin grup/genel toplamdaki payı</td><td>Grup ve genel toplam ayrı ayrı hesaplanır</td></tr>
+<tr><td><span class="badge badge-coral">Trend analizi</span></td><td>Uzun dönem — baz yıla göre oranlar</td><td>Min 5 yıl, baz yılda kriz olmamalı</td></tr>
+<tr><td><span class="badge badge-blue">Oran analizi</span></td><td>2 kalem arası matematiksel ilişki</td><td>Tek başına anlam ifade etmez — karşılaştır!</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>1. Likidite oranları — borç ödeme gücü</h3>
+<div class="formula-box">Cari Oran = Dönen Varlıklar / Kısa Vadeli Borçlar</div>
+<div class="formula-box">Likidite (Asit-Test) = (Dönen Varlıklar − Stoklar) / Kısa Vadeli Borçlar</div>
+<div class="formula-box">Nakit Oran = Hazır Değerler / Kısa Vadeli Borçlar</div>
+<div class="highlight-warn">Çok yüksek cari oran = fazla nakit/yüksek stok = varlıklar iyi yönetilmiyor olabilir. Tek orana bakarak yargıya varma!</div>
+<div class="highlight">Stoklar likidite oranında çıkarılır çünkü en az likit dönen varlıktır — daha gerçekçi sonuç verir.</div>
+</div>
+
+<div class="card">
+<h3>2. Varlık yönetim oranları — verimlilik</h3>
+<div class="formula-box">Stok Devir Hızı = Satışlar / Stoklar</div>
+<div class="formula-box">Alacak Tahsil Süresi (DSO) = Alacaklar / (Satışlar / 365)</div>
+<div class="formula-box">Duran Varlık Devir Hızı = Satışlar / Net Duran Varlıklar</div>
+<div class="formula-box">Toplam Aktif Devir Hızı = Satışlar / Toplam Varlıklar</div>
+<div class="highlight">DSO: kaç günlük satış alacaklarda bağlı? Düşük olması istenir. Önce günlük satışı bul (Satışlar/365), sonra alacakları buna böl.</div>
+</div>
+
+<div class="card">
+<h3>3. Borç yönetim oranları</h3>
+<div class="formula-box">Borç Oranı = Toplam Borç / Toplam Varlıklar</div>
+<div class="formula-box">Faiz Karşılama = EBIT / Faiz Giderleri</div>
+<div class="highlight">Faiz karşılama oranı yüksek → firma faiz ödemelerini rahat karşılıyor.</div>
+</div>
+
+<div class="card">
+<h3>4. Karlılık oranları</h3>
+<div class="formula-box">Faaliyet Marjı = Faaliyet Geliri / Satışlar</div>
+<div class="formula-box">Kâr Marjı = Net Gelir / Satışlar</div>
+<div class="formula-box">ROA = Net Gelir / Toplam Varlıklar</div>
+<div class="formula-box">BEP (Temel Kazanma Gücü) = EBIT / Toplam Varlıklar</div>
+<div class="formula-box">ROE = Net Gelir / Öz Kaynak</div>
+</div>
+
+<div class="card">
+<h3>5. Piyasa değeri oranları</h3>
+<div class="formula-box">F/K = Hisse Fiyatı / Hisse Başına Kâr</div>
+<div class="formula-box">PD/DD = Hisse Fiyatı / Hisse Başına Defter Değeri</div>
+<div class="formula-box">HBK = Net Kâr / Hisse Adedi</div>
+</div>
+
+<div class="card" style="border:2px solid #534AB7">
+<h3 style="color:#534AB7">DuPont denklemi — sınavda kesin gelir!</h3>
+<div class="formula-box" style="background:#EEEDFE;border-color:#534AB7;font-size:14px">ROA = Kâr Marjı × Aktif Devir Hızı = (Net Gelir/Satışlar) × (Satışlar/T.Varlıklar)</div>
+<div class="formula-box" style="background:#EEEDFE;border-color:#534AB7;font-size:14px">ROE = Kâr Marjı × Aktif Devir Hızı × Öz Sermaye Çarpanı</div>
+<div class="formula-box" style="background:#EEEDFE;border-color:#534AB7">Öz Sermaye Çarpanı = Toplam Varlıklar / Öz Sermaye</div>
+<p style="font-size:13px;margin:8px 0">ROE 3 unsura bağlı: <span class="badge badge-purple">kârlılık</span> <span class="badge badge-teal">verimlilik</span> <span class="badge badge-coral">finansal kaldıraç</span></p>
+<div class="highlight-danger">Borç oranı arttıkça ROE artar AMA zarar durumunda borç arttıkça zarar da artar!</div>
+
+<div class="example-box">
+<div class="label">Örnek — DuPont çözüm adımları</div>
+Net Gelir: 50 — Satışlar: 500 — T.Varlıklar: 1000 — Öz Kaynak: 400<br><br>
+<div class="step"><div class="step-num">1</div><span>Kâr Marjı = 50/500 = 0,10 = %10</span></div>
+<div class="step"><div class="step-num">2</div><span>Aktif Devir Hızı = 500/1000 = 0,5</span></div>
+<div class="step"><div class="step-num">3</div><span>Öz Sermaye Çarpanı = 1000/400 = 2,5</span></div>
+<div class="step"><div class="step-num">4</div><span>ROE = 0,10 × 0,5 × 2,5 = <strong style="font-weight:500;color:#534AB7">%12,5</strong></span></div>
+<span style="font-size:12px;color:var(--color-text-secondary)">Doğrulama: 50/400 = %12,5 ✓</span>
+</div>
+<div class="highlight-success">DuPont güçlü yönü: kârlılık + verimlilik + kaldıraç ayrı ayrı analiz edilir. Zayıf yönü: muhasebe verileri ile nakit akışı riski arasında doğrudan bağ kurulamaz.</div>
+</div>
+</div>
+
+<div class="tab-panel" id="panel4">
+<div class="section-title">Paranın zaman değeri — faiz hesaplamaları ve anüiteler</div>
+
+<div class="card">
+<h3>Temel kavramlar</h3>
+<p style="font-size:13px">Bugün alınan 100 TL, 1 yıl sonraki 100 TL'den daha değerlidir — çünkü yatırıp faiz kazanabilirsin. Bu farkın bedeli = faiz.</p>
+<div class="formula-box">Net Faiz = Brüt Faiz × (1 − Stopaj Oranı)</div>
+<div class="formula-box">Nominal Faiz = Reel Faiz + Enflasyon Primi + Risk Primi</div>
+<div class="formula-box">Fisher: (1+NFO) = (1+Reel Faiz) × (1+Beklenen Enflasyon)</div>
+<div class="highlight-warn">Fisher denkleminde enflasyon = beklenen enflasyon (geçmiş değil!)</div>
+<div class="example-box">
+<div class="label">Örnek — nominal faiz</div>
+Reel faiz: %10, beklenen enflasyon: %7<br>
+NFO = 0,07 + 0,10 + (0,07 × 0,10) = 0,177 = <strong style="font-weight:500;color:#534AB7">%17,7</strong>
+</div>
+</div>
+
+<div class="card">
+<h3>Basit faiz</h3>
+<div class="formula-box">I = P × i × n</div>
+<div class="formula-box">Gelecek Değer: FV = P × (1 + i × n)</div>
+<div class="formula-box">Bugünkü Değer: PV = FV / (1 + i × n)</div>
+<div class="grid2">
+<div class="example-box">
+<div class="label">Örnek — gelecek değer</div>
+75.000 TL, yıllık %20, 6 ay<br>
+FV = 75.000 × (1 + 0,20 × 0,5)<br>
+= 75.000 × 1,10 = <strong style="font-weight:500;color:#534AB7">82.500 TL</strong>
+</div>
+<div class="example-box">
+<div class="label">Örnek — bugünkü değer</div>
+6 ay sonra 14.000 TL lazım, %20<br>
+PV = 14.000 / (1 + 0,20 × 0,5)<br>
+= 14.000 / 1,10 = <strong style="font-weight:500;color:#534AB7">12.727 TL</strong>
+</div>
+</div>
+<div class="highlight">Vade yıl olarak verilmediyse çevir: 6 ay = 6/12 = 0,5 yıl, 90 gün = 90/365 yıl.</div>
+</div>
+
+<div class="card" style="border:2px solid #534AB7">
+<h3 style="color:#534AB7">Bileşik faiz — en kritik konu!</h3>
+<p style="font-size:13px">Her dönem sonunda kazanılan faiz anaparaya eklenir → sonraki dönem bu yeni tutar üzerinden faiz hesaplanır (faiz üzerinden faiz).</p>
+<div class="formula-box" style="background:#EEEDFE;font-size:14px">Gelecek Değer: FV = PV × (1 + i)ⁿ</div>
+<div class="formula-box" style="background:#EEEDFE;font-size:14px">Bugünkü Değer: PV = FV / (1 + i)ⁿ</div>
+
+<div class="highlight-danger">Yılda birden fazla faiz ödemesi varsa:<br>
+→ Faiz oranını m'ye BÖL (i/m)<br>
+→ Süreyi m ile ÇARP (n×m)<br>
+<strong style="font-weight:500">FV = PV × (1 + i/m)^(n×m)</strong><br>
+m = yıldaki faiz ödeme sıklığı (6 ayda bir → m=2, 3 ayda bir → m=4, aylık → m=12)</div>
+
+<div class="example-box">
+<div class="label">Örnek — bileşik faiz</div>
+1.000 TL, %12, 5 yıl<br>
+FV = 1.000 × (1,12)⁵ = 1.000 × 1,7623 = <strong style="font-weight:500;color:#534AB7">1.762,3 TL</strong>
+</div>
+<div class="example-box">
+<div class="label">Örnek — 6 ayda bir faizlendirme</div>
+2.000 TL, yıllık %16, 4 yıl, 6 ayda bir<br>
+m=2 → i/m = %8, n×m = 8 dönem<br>
+FV = 2.000 × (1,08)⁸ = 2.000 × 1,8509 = <strong style="font-weight:500;color:#534AB7">3.701,8 TL</strong>
+</div>
+<div class="example-box">
+<div class="label">Örnek — bugünkü değer (iskontolama)</div>
+5 yıl sonra 1.762 TL, %12<br>
+PV = 1.762 / (1,12)⁵ = 1.762 × 0,5674 = <strong style="font-weight:500;color:#534AB7">~1.000 TL</strong>
+</div>
+</div>
+
+<div class="card" style="border:2px solid #1D9E75">
+<h3 style="color:#0F6E56">Anüiteler</h3>
+<p style="font-size:13px">Belirli süre boyunca, eşit aralıklarla yapılan eşit miktarda ödemeler dizisi. Normal anüite = dönem sonu, dönem başı anüite = dönem başı.</p>
+<div class="formula-box" style="background:#E1F5EE;font-size:14px">Normal Anüite Gelecek Değeri: AGD = A × [(1+i)ⁿ − 1] / i</div>
+<div class="formula-box" style="background:#E1F5EE;font-size:14px">Normal Anüite Bugünkü Değeri: ABD = A × [1 − (1+i)⁻ⁿ] / i</div>
+<div class="formula-box" style="background:#E1F5EE">Sonsuz Ödeme (perpetüite): PV = A / i</div>
+
+<div class="example-box">
+<div class="label">Örnek — anüite gelecek değer</div>
+Her yıl sonu 1.000 TL, %10, 3 yıl<br>
+<div class="step"><div class="step-num">1</div><span>1. taksit → 2 yıl faiz: 1.000 × 1,10² = 1.210</span></div>
+<div class="step"><div class="step-num">2</div><span>2. taksit → 1 yıl faiz: 1.000 × 1,10¹ = 1.100</span></div>
+<div class="step"><div class="step-num">3</div><span>3. taksit → 0 yıl faiz: 1.000 × 1 = 1.000</span></div>
+Toplam = <strong style="font-weight:500;color:#0F6E56">3.310 TL</strong><br>
+<span style="font-size:12px;color:var(--color-text-secondary)">Formülle: 1.000 × [(1,10³−1)/0,10] = 1.000 × 3,31 = 3.310 ✓</span>
+</div>
+
+<div class="example-box">
+<div class="label">Örnek — anüite bugünkü değer (buzdolabı problemi)</div>
+3 taksit × 1.000 TL veya peşin 2.600 TL. Faiz %10.<br>
+ABD = 1.000 × [1−(1,10)⁻³] / 0,10 = 1.000 × 2,487 = <strong style="font-weight:500;color:#0F6E56">2.487 TL</strong><br>
+2.487 &lt; 2.600 → <span class="badge badge-green">Taksitli almak daha kârlı!</span>
+</div>
+
+<div class="example-box">
+<div class="label">Örnek — sonsuz ödeme</div>
+Her yıl 2,50$ temettü, iskonto oranı %10<br>
+PV = 2,50 / 0,10 = <strong style="font-weight:500;color:#0F6E56">25$</strong>
+</div>
+
+<div class="highlight">Geciktirilmiş anüite: ödemeler hemen başlamaz (g dönem gecikme). Önce normal ABD hesapla, sonra g dönem daha iskonto et.</div>
+</div>
+</div>
+
+<div class="tab-panel" id="panel5">
+<div class="section-title">Finansman türleri — kısa vadeli finansman, faktoring, akreditif</div>
+
+<div class="card">
+<h3>Kısa vadeli finansman genel</h3>
+<p style="font-size:13px">Max 1 yıl geri ödemeli. Genelde dönen varlıkların finansmanında kullanılır.</p>
+<div class="grid2">
+<div class="mini-card" style="border-left:3px solid #639922;border-radius:0"><span class="title">Avantajlar</span><p>Daha hızlı temin, esnek, genelde maliyeti düşük</p></div>
+<div class="mini-card" style="border-left:3px solid #E24B4A;border-radius:0"><span class="title">Dezavantajlar</span><p>Geri ödeme sıklığı riski, faiz dalgalanması riski</p></div>
+</div>
+<div class="highlight-danger">Kısa vadeli kaynakların duran varlık finansmanında kullanılması işletme riskini ARTIRIR!</div>
+</div>
+
+<div class="card">
+<h3>Kısa vadeli finansman kaynakları</h3>
+<table>
+<tr><th>Kaynak</th><th>Açıklama</th><th>Özellik</th></tr>
+<tr><td><span class="badge badge-purple">Ticari kredi</span></td><td>Satıcının alıcıya ödeme süresi tanıması</td><td>Teminat: ticari itibar</td></tr>
+<tr><td><span class="badge badge-teal">Repo</span></td><td>Menkul kıymetin geri alım taahhüdüyle satımı</td><td>1 gece-30 gün</td></tr>
+<tr><td><span class="badge badge-coral">Menkulleştirme</span></td><td>Alacaklar karşılık gösterilerek MK ihracı (VDMK)</td><td>Likidite artışı sağlar</td></tr>
+<tr><td><span class="badge badge-blue">Finansman bonosu</span></td><td>A.Ş. max 1 yıl vadeli MK ihracı</td><td>En düşük maliyetli kısa vadeli kaynak</td></tr>
+<tr><td><span class="badge badge-amber">Banka kredileri</span></td><td>Nakdi/gayri nakdi krediler</td><td>5C kuralı ile değerlendirilir</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>Banka kredileri — 5C kuralı</h3>
+<div class="grid3">
+<div class="mini-card"><span class="title">Character</span><p>Karakter — güvenilirlik</p></div>
+<div class="mini-card"><span class="title">Capacity</span><p>Kapasite — geri ödeme gücü</p></div>
+<div class="mini-card"><span class="title">Capital</span><p>Kapital — sermaye yapısı</p></div>
+<div class="mini-card"><span class="title">Collateral</span><p>Teminat — güvence varlıklar</p></div>
+<div class="mini-card"><span class="title">Conditions</span><p>Koşullar — ekonomik ortam</p></div>
+</div>
+<h4>Kredi türleri</h4>
+<div style="display:flex;flex-wrap:wrap;gap:4px;margin:6px 0">
+<span class="badge badge-purple">Spot kredi (tek seferde ödeme, max 360 gün)</span>
+<span class="badge badge-teal">İskonto kredisi (senet kırdırma)</span>
+<span class="badge badge-coral">Rotatif kredi (esnek çekim/kapatma)</span>
+<span class="badge badge-blue">Prefinansman (ihracat finansmanı)</span>
+<span class="badge badge-amber">Döviz kredisi (k=Libor+Spread+Komisyon)</span>
+<span class="badge badge-green">Eximbank (vergi/harç muaf, düşük maliyet)</span>
+</div>
+</div>
+
+<div class="card">
+<h3>Uluslararası ticarette ödeme şekilleri</h3>
+<table>
+<tr><th>Yöntem</th><th>Kim güvende?</th><th>Açıklama</th></tr>
+<tr><td><span class="badge badge-green">Peşin ödeme</span></td><td>İhracatçı</td><td>Önce ödeme, sonra mal. İthalatçı risk alır.</td></tr>
+<tr><td><span class="badge badge-amber">Mal mukabili</span></td><td>İthalatçı</td><td>Önce mal, sonra ödeme (30-90 gün). İhracatçı risk alır.</td></tr>
+<tr><td><span class="badge badge-blue">Vesaik mukabili</span></td><td>Kısmen ikisi</td><td>Bankalar kolaylaştırır ama risk üstlenmez. Akreditiften ucuz.</td></tr>
+<tr><td><span class="badge badge-purple">Akreditif</span></td><td>İkisi de</td><td>Bankalar hem ihracatçıyı hem ithalatçıyı korur. En güvenli.</td></tr>
+</table>
+</div>
+
+<div class="card">
+<h3>Akreditif türleri</h3>
+<table>
+<tr><th>Tür</th><th>Özellik</th></tr>
+<tr><td><span class="badge badge-red">Dönülebilir</span></td><td>Haber vermeden değiştirilebilir/iptal edilebilir. İhracatçı için riskli. Belirtilmezse varsayılan bu.</td></tr>
+<tr><td><span class="badge badge-green">Dönülemez</span></td><td>İptal/değişiklik yapılamaz. En çok kullanılan. İhracatçı korunur.</td></tr>
+<tr><td><span class="badge badge-purple">Rotatif</span></td><td>Kullanıldığında otomatik yenilenir. Kümülatif: kullanılmayan devreder.</td></tr>
+<tr><td><span class="badge badge-blue">Devredilebilir</span></td><td>1 kez devredilebilir. Sadece gayri kabili rücu olanlar.</td></tr>
+<tr><td><span class="badge badge-coral">Red clause</span></td><td>Belge ibraz etmeden avans ödenir. Kırmızı mürekkeple yazılır.</td></tr>
+<tr><td><span class="badge badge-teal">Green clause</span></td><td>Red clause benzeri ama mallar ambara teslim edilir — risk azalır.</td></tr>
+<tr><td><span class="badge badge-amber">Back to back</span></td><td>Reeksportta kullanılır. Karşılıklı akreditif.</td></tr>
+<tr><td><span class="badge badge-pink">Stand-by</span></td><td>Ödeme aracı değil, garanti aracı. Müteahhitlik sözleşmeleri.</td></tr>
+</table>
+</div>
+
+<div class="card" style="border:2px solid #534AB7">
+<h3 style="color:#534AB7">Faktoring — işlemli soru gelir!</h3>
+<p style="font-size:13px">Kredili satış alacaklarını faktoring şirketine devretme yoluyla nakit sağlama. Vadeler: 30-120 gün.</p>
+<div class="grid3">
+<div class="mini-card"><span class="title">Finansman</span><p>Ön ödeme / avans</p></div>
+<div class="mini-card"><span class="title">Hizmet</span><p>Tahsilat, muhasebe, takip</p></div>
+<div class="mini-card"><span class="title">Risk üstlenme</span><p>Tahsil edilememe riski</p></div>
+</div>
+<div class="formula-box" style="background:#EEEDFE">Maliyet = Komisyon Gideri + Finansman Gideri</div>
+
+<div class="example-box">
+<div class="label">Örnek — yurt içi faktoring</div>
+50.000 TL, 90 gün, %2 komisyon, %6 faiz (3 aylık)<br>
+<div class="step"><div class="step-num">1</div><span>Finansman gideri = 50.000 × 0,06 = 3.000 TL</span></div>
+<div class="step"><div class="step-num">2</div><span>Komisyon = 50.000 × 0,02 = 1.000 TL</span></div>
+<div class="step"><div class="step-num">3</div><span>Ödenen = 50.000 − (3.000+1.000) = <strong style="font-weight:500;color:#534AB7">46.000 TL</strong></span></div>
+</div>
+
+<div class="example-box">
+<div class="label">Örnek — uluslararası faktoring</div>
+500.000$, %20 garanti payı, LIBOR %3, Spread %0,02, %2 komisyon<br>
+<div class="step"><div class="step-num">1</div><span>Garanti payı = 500.000 × 0,20 = 100.000$</span></div>
+<div class="step"><div class="step-num">2</div><span>Faiz oranı = %3 + %0,02 = %3,02</span></div>
+<div class="step"><div class="step-num">3</div><span>Finansman gideri = 500.000 × 0,0302 = 15.100$</span></div>
+<div class="step"><div class="step-num">4</div><span>Komisyon = 500.000 × 0,02 = 10.000$</span></div>
+<div class="step"><div class="step-num">5</div><span>İşletmeye ödenen = 500.000 − 100.000 − 25.100 = <strong style="font-weight:500;color:#534AB7">374.900$</strong></span></div>
+</div>
+<div class="highlight-warn">Uygulamada genellikle fatura tutarının %80'i üzerinden ön ödeme yapılır (%20 garanti payı bırakılır).</div>
+</div>
+</div>
+
+<div class="tab-panel" id="panel6">
+<div class="section-title">Tüm formüller — hızlı referans</div>
+
+<div class="card">
+<h3>Bilanço formülleri</h3>
+<div class="formula-box">Öz Kaynak = Toplam Varlıklar − Toplam Borçlar</div>
+<div class="formula-box">Net İşletme Sermayesi = Dönen Varlıklar − Kısa Vadeli Borçlar</div>
+<div class="formula-box">MVA = Piyasa Değeri − Defter Değeri</div>
+<div class="formula-box">EBITDA = Faaliyet Geliri + Amortisman</div>
+</div>
+
+<div class="card">
+<h3>Faiz formülleri</h3>
+<div class="formula-box">Net Faiz = Brüt Faiz × (1 − Stopaj Oranı)</div>
+<div class="formula-box">Fisher: (1+NFO) = (1+Reel) × (1+Enflasyon)</div>
+<div class="formula-box">Basit Faiz: I = P × i × n</div>
+<div class="formula-box">Basit FV = P × (1 + i×n) | PV = FV / (1 + i×n)</div>
+<div class="formula-box">Bileşik FV = PV × (1+i)ⁿ | PV = FV / (1+i)ⁿ</div>
+<div class="formula-box">Yılda m kez: FV = PV × (1 + i/m)^(n×m)</div>
+</div>
+
+<div class="card">
+<h3>Anüite formülleri</h3>
+<div class="formula-box">Normal Anüite GD: AGD = A × [(1+i)ⁿ − 1] / i</div>
+<div class="formula-box">Normal Anüite BD: ABD = A × [1 − (1+i)⁻ⁿ] / i</div>
+<div class="formula-box">Sonsuz Ödeme: PV = A / i</div>
+</div>
+
+<div class="card">
+<h3>Likidite oranları</h3>
+<div class="formula-box">Cari Oran = Dönen Varlıklar / Kısa Vadeli Borçlar</div>
+<div class="formula-box">Asit-Test = (Dönen Varlıklar − Stoklar) / KVB</div>
+<div class="formula-box">Nakit Oran = Hazır Değerler / KVB</div>
+</div>
+
+<div class="card">
+<h3>Varlık yönetim oranları</h3>
+<div class="formula-box">Stok Devir Hızı = Satışlar / Stoklar</div>
+<div class="formula-box">DSO = Alacaklar / (Satışlar / 365)</div>
+<div class="formula-box">DVDH = Satışlar / Net Duran Varlıklar</div>
+<div class="formula-box">TADH = Satışlar / Toplam Varlıklar</div>
+</div>
+
+<div class="card">
+<h3>Borç ve karlılık oranları</h3>
+<div class="formula-box">Borç Oranı = Toplam Borç / Toplam Varlıklar</div>
+<div class="formula-box">Faiz Karşılama = EBIT / Faiz Giderleri</div>
+<div class="formula-box">ROA = Net Gelir / Toplam Varlıklar</div>
+<div class="formula-box">ROE = Net Gelir / Öz Kaynak</div>
+<div class="formula-box">BEP = EBIT / Toplam Varlıklar</div>
+<div class="formula-box">Kâr Marjı = Net Gelir / Satışlar</div>
+</div>
+
+<div class="card" style="border:2px solid #534AB7">
+<h3>DuPont</h3>
+<div class="formula-box" style="background:#EEEDFE;font-size:14px">ROA = (Net Gelir/Satışlar) × (Satışlar/T.Varlıklar)</div>
+<div class="formula-box" style="background:#EEEDFE;font-size:14px">ROE = (Net Gelir/Satışlar) × (Satışlar/T.Varlıklar) × (T.Varlıklar/Öz Sermaye)</div>
+</div>
+
+<div class="card">
+<h3>Piyasa oranları</h3>
+<div class="formula-box">F/K = Hisse Fiyatı / Hisse Başına Kâr</div>
+<div class="formula-box">PD/DD = Hisse Fiyatı / Hisse Başına Defter Değeri</div>
+<div class="formula-box">HBK = Net Kâr / Hisse Adedi</div>
+</div>
+
+<div class="card">
+<h3>Faktoring</h3>
+<div class="formula-box">Finansman Gideri = Alacak Tutarı × Faiz Oranı</div>
+<div class="formula-box">Komisyon = Alacak Tutarı × Komisyon Oranı</div>
+<div class="formula-box">Ödenen = Alacak − Garanti Payı − Fin.Gideri − Komisyon</div>
+</div>
+
+<div class="card">
+<h3>Yatay / dikey / trend analizi</h3>
+<div class="formula-box">Yatay: Değişim % = (Yeni − Eski) / Eski × 100</div>
+<div class="formula-box">Dikey: Pay % = Kalem / Toplam × 100</div>
+<div class="formula-box">Trend: Eğilim % = İlgili Yıl / Baz Yıl × 100</div>
+</div>
+</div>
+
+<script>
+function switchTab(idx){
+var btns=document.querySelectorAll('.tab-btn');
+var panels=document.querySelectorAll('.tab-panel');
+btns.forEach(function(b,i){b.classList.toggle('active',i===idx)});
+panels.forEach(function(p,i){p.classList.toggle('active',i===idx)});
+}
+function filterContent(q){
+q=q.toLowerCase().trim();
+var panels=document.querySelectorAll('.tab-panel');
+var cards=document.querySelectorAll('.card');
+if(!q){
+panels.forEach(function(p,i){p.style.display=i===0?'block':'none';p.classList.toggle('active',i===0)});
+document.querySelectorAll('.tab-btn').forEach(function(b,i){b.classList.toggle('active',i===0)});
+cards.forEach(function(c){c.style.display='block'});
+return;
+}
+panels.forEach(function(p){p.style.display='block';p.classList.add('active')});
+document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active')});
+cards.forEach(function(c){
+var txt=c.textContent.toLowerCase();
+c.style.display=txt.includes(q)?'block':'none';
+});
+}
+</script>
+</body>
+</html>
